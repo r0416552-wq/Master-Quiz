@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Master Quiz</title>
+<style>
+body{font-family:Arial;background:#eef2ff;text-align:center;padding:20px}
+.card{background:white;max-width:420px;margin:25px auto;padding:20px;border-radius:20px}
+h1{color:#4338ca}
+button{display:block;width:100%;padding:14px;margin:10px 0;background:#4f46e5;color:white;border:0;border-radius:12px;font-size:17px}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>🏆 Master Quiz</h1>
+<p id="progress">Ready to play?</p>
+<h3 id="question">Let's start!</h3>
+<div id="answers"></div>
+<p id="result"></p>
+<button id="start" onclick="startQuiz()">Start Game</button>
+<button id="next" onclick="nextQuestion()" hidden>Next Question</button>
+</div>
+<script>
+const questions=[
+{q:"What is the capital of India?",a:["Mumbai","New Delhi","Chennai","Jaipur"],c:1},
+{q:"What is 5 × 6?",a:["25","30","35","40"],c:1},
+{q:"Which planet is called the Red Planet?",a:["Earth","Venus","Mars","Jupiter"],c:2},
+{q:"How many days are in a week?",a:["5","6","7","8"],c:2},
+{q:"Which animal is India's national animal?",a:["Lion","Tiger","Elephant","Horse"],c:1}
+];
+let i=0,score=0,locked=false;
+function startQuiz(){i=0;score=0;document.getElementById("start").hidden=true;show();}
+function show(){
+locked=false;
+document.getElementById("progress").textContent="Question "+(i+1)+" of "+questions.length+" | Score: "+score;
+document.getElementById("question").textContent=questions[i].q;
+document.getElementById("result").textContent="";
+document.getElementById("next").hidden=true;
+let box=document.getElementById("answers");box.innerHTML="";
+questions[i].a.forEach((a,n)=>{
+let b=document.createElement("button");b.textContent=a;
+b.onclick=()=>answer(n);box.appendChild(b);
+});
+}
+function answer(n){
+if(locked)return;locked=true;
+document.querySelectorAll("#answers button").forEach(b=>b.disabled=true);
+if(n===questions[i].c){score++;document.getElementById("result").textContent="✅ Correct!";}
+else document.getElementById("result").textContent="Correct answer: "+questions[i].a[questions[i].c];
+document.getElementById("progress").textContent="Score: "+score;
+document.getElementById("next").hidden=false;
+document.getElementById("next").textContent=i===questions.length-1?"See Result":"Next Question";
+}
+function nextQuestion(){
+if(!locked)return;i++;
+if(i<questions.length)show();
+else{
+document.getElementById("question").textContent="🎉 Quiz Completed!";
+document.getElementById("answers").innerHTML="";
+document.getElementById("result").textContent="Your score: "+score+" / "+questions.length;
+document.getElementById("progress").textContent="";
+document.getElementById("next").hidden=true;
+document.getElementById("start").hidden=false;
+document.getElementById("start").textContent="Play Again";
+}
+}
+</script>
+</body>
+</html>
