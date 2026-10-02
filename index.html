@@ -30,7 +30,13 @@ const questions=[
 {q:"Which animal is India's national animal?",a:["Lion","Tiger","Elephant","Horse"],c:1}
 ];
 let i=0,score=0,locked=false;
-function startQuiz(){i=0;score=0;document.getElementById("start").hidden=true;show();}
+function startQuiz(){
+  i=0;
+  score=0;
+  document.getElementById("start").hidden=true;
+  document.getElementById("next").hidden=true;
+  show();
+}
 function show(){
 locked=false;
 document.getElementById("progress").textContent="Question "+(i+1)+" of "+questions.length+" | Score: "+score;
